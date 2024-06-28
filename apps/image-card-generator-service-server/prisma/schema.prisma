@@ -1,0 +1,44 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Search {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  keyword   String?
+  results   Json?
+  updatedAt DateTime @updatedAt
+}
+
+model Trend {
+  cards      Card[]
+  createdAt  DateTime @default(now())
+  id         String   @id @default(cuid())
+  keyword    String?
+  popularity Int?
+  updatedAt  DateTime @updatedAt
+}
+
+model Card {
+  backgroundImageUrl String?
+  createdAt          DateTime @default(now())
+  description        String?
+  id                 String   @id @default(cuid())
+  title              String?
+  trend              Trend?   @relation(fields: [trendId], references: [id])
+  trendId            String?
+  updatedAt          DateTime @updatedAt
+}
+
+model ImageModel {
+  apiEndpoint String?
+  createdAt   DateTime @default(now())
+  id          String   @id @default(cuid())
+  name        String?
+  updatedAt   DateTime @updatedAt
+}
